@@ -1,0 +1,15 @@
+[req]
+req_extensions = v3_req
+distinguished_name = req_distinguished_name
+prompt = no
+[req_distinguished_name]   
+countryName            = CN
+stateOrProvinceName    = SX                  
+localityName           = XA                  
+organizationName       = jhinno          
+organizationalUnitName = dev               
+emailAddress           = support@jhinno.com 
+0.commonName           = appserver
+[ v3_req ]
+keyUsage = keyEncipherment, dataEncipherment
+extendedKeyUsage = serverAuth
