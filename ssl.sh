@@ -1,15 +1,23 @@
+#!/bin/sh
 echo "ca"
-openssl genrsa -out ca.pem 2048
-openssl req -config conf.cnf -newkey rsa:2048 -x509 -days 3650 -key ca.pem -out ca.crt 
+openssl genrsa -out ca.key 2048
+openssl req -config conf.cnf -newkey rsa:2048 -x509 -days 3650 -key ca.key -out ca.crt 
 echo "server"
 openssl genrsa -out server.key 2048
-openssl req -config conf.cnf -new -key server.key -out server_reqout.txt 
-openssl x509 -req -in server_reqout.txt -days 3650 -sha1 -CAcreateserial -CA ca.crt -CAkey ca.pem -out server.crt -extfile extfile.cnf
+openssl req -config conf.cnf -new -key server.key -out server.csr
+openssl x509 -req -in server.csr -days 3650  -sha256 -CAcreateserial -CA ca.crt -CAkey ca.key -out server.crt 
+# openssl x509 -req -in server.csr -days 3650  -CAcreateserial -CA ca.crt -CAkey ca.key -out server.crt -extfile extfile.conf # This is for SANs config 
+
 echo "client"
 openssl genrsa -out client.key 2048
-openssl req -config conf.cnf -new -key client.key -out client_reqout.txt 
-openssl x509 -req -in client_reqout.txt -days 3650 -sha1 -CAcreateserial -CA ca.crt -CAkey ca.pem -out client.crt
-rm -rf *reqout* ca.pem ca.srl 
+openssl req -config conf.cnf -new -key client.key -out client.csr
+openssl x509 -req -in client.csr -days 3650  -sha256 -CAcreateserial -CA ca.crt -CAkey ca.key -out client.crt
+
+rm -rf *.csr
+rm ca.key
+rm ca.srl
+
+rm -rf ssl
 mkdir ssl
 mv ca.crt ssl/ca.crt
 mv server.key ssl/server.key

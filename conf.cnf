@@ -9,7 +9,7 @@ localityName           = XA
 organizationName       = jhinno          
 organizationalUnitName = dev               
 emailAddress           = support@jhinno.com 
-0.commonName           = appserver
+commonName           = appserver
 [ v3_req ]
 keyUsage = keyEncipherment, dataEncipherment
 extendedKeyUsage = serverAuth

@@ -27,13 +27,19 @@ func main() {
 
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
-			RootCAs:      pool,
+			// RootCAs:            pool,
 			Certificates: []tls.Certificate{cliCrt},
+			// ServerName:         "appserver",
+			InsecureSkipVerify: true,
 		},
 	}
 	client := &http.Client{Transport: tr}
 	//这里的ip地址需要在生成自签名证书的时候指定,否则ssl验证不通过。
 	resp, err := client.Get("https://127.0.0.1:8081")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(body))
